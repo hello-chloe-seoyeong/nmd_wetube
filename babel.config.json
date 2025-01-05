@@ -1,0 +1,4 @@
+{
+  "presets": ["@babel/preset-env"]
+  // preset은 babel의 플러그인이고, preset-env가 젤 유명? 최신 자바스크립트 사용할 수 있게 해줘
+}
