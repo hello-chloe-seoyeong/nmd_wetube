@@ -4,8 +4,17 @@ const PORT = 4000;
 
 const app = express();
 
-app.get("/", () => console.log("Somebody is trying to go home /")); // 누군가 "/" root page로 get request를 보내면, callback 함수를 실행시켜줘
+const handleHome = (req, res) => {
+  return res.send("Home Page");
+}
+
+const handleLogin = (req, res) => {
+  return res.send("Login here.");
+}
+
+app.get("/", handleHome); // 누군가 "/" root page로 get request를 보내면, callback 함수를 실행시켜줘
 // get request에는 route가 있어, 어디로 가고싶은지, /login, /about, / ... 이렇게
+app.get("/login", handleLogin);
 
 const handleListening = () => console.log(`✅ Server listening on port http://localhost${PORT} 🚀`);
 
