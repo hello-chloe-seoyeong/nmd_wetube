@@ -7,7 +7,7 @@
     "url": "git+https://github.com/hello-chloe-seoyeong/nmd_wetube.git"
   },
   "scripts": {
-    "win": "node index.js"
+    "dev": "nodemon --exec babel-node src/server.js"
   },
   "author": "Chloe Seoyeong",
   "license": "MIT",
