@@ -4,8 +4,17 @@ const PORT = 4000;
 
 const app = express();
 
-const gossipMiddleware = (req, res, next) => {
-  console.log(`Someone want to go to : ${req.url}`);
+const logger = (req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+}
+
+const privateMiddleware = (req, res, next) => {
+  const url = req.url;
+  if(url === "/protected") { // 만일 url이 /protected이면 아래 실행, 아니면 next()
+    return res.send("<h1>Not Allowed</h1>")
+  }
+  console.log("Allowed, you can continue.")
   next();
 }
 
@@ -13,13 +22,16 @@ const handleHome = (req, res) => {
   return res.send("Home Page");
 }
 
-const handleLogin = (req, res) => {
-  return res.send("Login here.");
+const handleProtected = (req, res) => {
+  return res.send("Protected Page");
 }
 
-app.get("/", gossipMiddleware, handleHome); // 누군가 "/" root page로 get request를 보내면, callback 함수를 실행시켜줘
+app.use(logger);
+app.use(privateMiddleware);
+
+app.get("/", handleHome); // 누군가 "/" root page로 get request를 보내면, callback 함수를 실행시켜줘
 // get request에는 route가 있어, 어디로 가고싶은지, /login, /about, / ... 이렇게
-app.get("/login", handleLogin);
+app.get("/protected", handleProtected);
 
 const handleListening = () => console.log(`✅ Server listening on port http://localhost${PORT} 🚀`);
 
