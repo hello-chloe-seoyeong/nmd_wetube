@@ -4,6 +4,11 @@ const PORT = 4000;
 
 const app = express();
 
+const gossipMiddleware = (req, res, next) => {
+  console.log(`Someone want to go to : ${req.url}`);
+  next();
+}
+
 const handleHome = (req, res) => {
   return res.send("Home Page");
 }
@@ -12,7 +17,7 @@ const handleLogin = (req, res) => {
   return res.send("Login here.");
 }
 
-app.get("/", handleHome); // 누군가 "/" root page로 get request를 보내면, callback 함수를 실행시켜줘
+app.get("/", gossipMiddleware, handleHome); // 누군가 "/" root page로 get request를 보내면, callback 함수를 실행시켜줘
 // get request에는 route가 있어, 어디로 가고싶은지, /login, /about, / ... 이렇게
 app.get("/login", handleLogin);
 
