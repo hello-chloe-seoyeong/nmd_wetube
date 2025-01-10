@@ -1,13 +1,16 @@
 import express from "express"; // "express"라는 package를 express라는 이름으로 import 한거, 경로를 안적어줘도 npm과 nodeJS가 node_modules에 가서 express 찾아서 그 안에 있는 index.js를 실행시켜줘. 와우
+import morgan from "morgan";
 
 const PORT = 4000;
 
 const app = express();
 
-const logger = (req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
-}
+const logger = morgan("dev");
+
+// const logger = (req, res, next) => {
+//   console.log(`${req.method} ${req.url}`);
+//   next();
+// }
 
 const privateMiddleware = (req, res, next) => {
   const url = req.url;
