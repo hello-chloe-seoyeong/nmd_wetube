@@ -14,6 +14,6 @@ app.use("/", globalRouter);
 app.use("/users", userRouter);
 app.use("/videos", videoRouter);
 
-const handleListening = () => console.log(`✅ Server listening on port http://localhost${PORT} 🚀`);
+const handleListening = () => console.log(`✅ Server listening on port http://localhost:${PORT} 🚀`);
 
 app.listen(PORT, handleListening); // 서버는 항상 request를 기다리고 있어야해. 언제 요청하나 듣고 있는거, app.listen(port, callback)
