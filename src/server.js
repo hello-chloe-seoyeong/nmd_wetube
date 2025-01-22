@@ -8,6 +8,9 @@ const PORT = 4000;
 
 const app = express();
 const logger = morgan("dev");
+
+app.set("view engine", "pug"); // 뷰 엔진으로 pug를 세팅, 이제 express는 html을 리턴할 때 pug를 이용할 거
+app.set("views", process.cwd() + "/src/views");
 app.use(logger);
 
 app.use("/", globalRouter);
