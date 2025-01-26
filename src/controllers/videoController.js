@@ -1,4 +1,9 @@
-export const trending = (req, res) => res.render("home", {pageTitle: "Home"}); // render(view이름, {템플릿에 보낼 변수 원하는 만큼 보낼 수 있어})
+const fakeUser = {
+  username: "Chloe",
+  loggedIn: true,
+}
+
+export const trending = (req, res) => res.render("home", {pageTitle: "Home", fakeUser}); // render(view이름, {템플릿에 보낼 변수 원하는 만큼 보낼 수 있어})
 export const see = (req, res) => res.render("watch", {pageTitle: "Watch"});
 export const edit = (req, res) => res.render("edit", {pageTitle: "Edit"});
 export const search = (req, res) => res.send("Search");
