@@ -35,11 +35,11 @@ const videos = [
 export const trending = (req, res) => {
   return res.render("home", {pageTitle: "Home", videos})
 }
-export const see = (req, res) => {
+export const watch = (req, res) => {
   // const id = req.params.id; == same, 아래꺼가 ES6
   const { id } = req.params;
   const video = videos[id - 1]; // fake database id가 1부터 시작하는데, 인덱스는 0부터 시작해서 바꿔줍
-  res.render("watch", {pageTitle: `Watching ${video.title}`})
+  res.render("watch", {pageTitle: `Watching ${video.title}`, video})
 };
 export const edit = (req, res) => res.render("edit", {pageTitle: "Edit"});
 export const search = (req, res) => res.send("Search");
