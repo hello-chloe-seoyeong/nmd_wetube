@@ -12,7 +12,7 @@ const logger = morgan("dev");
 app.set("view engine", "pug"); // 뷰 엔진으로 pug를 세팅, 이제 express는 html을 리턴할 때 pug를 이용할 거
 app.set("views", process.cwd() + "/src/views");
 app.use(logger);
-
+app.use(express.urlencoded({ extended: true })); // express applicationdl form의 value들을 이해할 수 있도록 하고 자바스크립트 형태로 바꿔줘.
 app.use("/", globalRouter);
 app.use("/users", userRouter);
 app.use("/videos", videoRouter);
