@@ -1,56 +1,27 @@
-const fakeUser = {
-  username: "Chloe",
-  loggedIn: true,
-}
-
-// const trending 안에 있던 걸 밖으로 빼서 trending, see, edit... 에서 다 쓸수 있게 되었어
-const videos = [
-  {
-    title: "Video 1",
-    rating: 5,
-    comments: 2,
-    createAt: "2 minutes ago",
-    views: 1,
-    id: 1
-  },
-  {
-    title: "Video 2",
-    rating: 4,
-    comments: 4,
-    createAt: "5 minutes ago",
-    views: 60,
-    id: 2
-  },
-  {
-    title: "Video 3",
-    rating: 3,
-    comments: 6,
-    createAt: "8 minutes ago",
-    views: 70,
-    id: 3
-  }
-];
-
+import Video from "../models/Video";
 // export const trending = (req, res) => res.render("home", {pageTitle: "Home", fakeUser}); // render(view이름, {템플릿에 보낼 변수 원하는 만큼 보낼 수 있어})
-export const trending = (req, res) => {
-  return res.render("home", {pageTitle: "Home", videos})
+
+export const home = (req, res) => {
+  Video.find({}, (error, videos) => {
+    console.log("errors", error);
+    console.log("videos", videos);
+  });
+  // {search terms} 인데, 빈 상태로 두면 "모든 형식"을 찾는다는 것을 의미
+  return res.render("home", {pageTitle: "Home", videos: []});
+  // home.pug에서 videos 배열 기다리고 있어서 임시로 보내주는 거
 }
 export const watch = (req, res) => {
   // const id = req.params.id; == same, 아래꺼가 ES6
   const { id } = req.params;
-  const video = videos[id - 1]; // fake database id가 1부터 시작하는데, 인덱스는 0부터 시작해서 바꿔줍
-  res.render("watch", {pageTitle: `Watching ${video.title}`, video})
+  res.render("watch", {pageTitle: `Watching`})
 };
 export const getEdit = (req, res) => {
   const { id } = req.params;
-  const video = videos[id - 1];
-  res.render("edit", {pageTitle: `Editing: ${video.title}`, video})
+  res.render("edit", {pageTitle: `Editing`})
 };
 export const postEdit = (req, res) => {
   const { id } = req.params;
-  console.log(req.body); // urlencoded 설정 전엔 undefined
   const { title } = req.body;
-  videos[id - 1].title = title; // fake database 용 수정
   return res.redirect(`/videos/${id}`);
 }
 export const search = (req, res) => res.send("Search");
@@ -64,16 +35,6 @@ export const getUpload = (req, res) => {
 export const postUpload = (req, res) => {
   // here we will add a video to the video array.
   const {title} = req.body; // === title = req.body.title;
-
-  const newVideo = {
-    // title: req.body.title,
-    title,
-    rating: 0,
-    comments: 0,
-    createAt: "Just now",
-    views: 0,
-    id: videos.length + 1
-  }
 
   videos.push(newVideo);
   return res.redirect("/")
