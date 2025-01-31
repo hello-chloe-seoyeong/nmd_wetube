@@ -1,1 +1,18 @@
 // 해당 데이터가 어떻게 생겼는지(데이터 관점에서) 데이터베이스에 알려주기위해 몽구스를 도와주는 파일이랄까
+import mongoose from "mongoose";
+
+// model을 만들기 전에 model의 형태를 정의를 해줘야해 : Schema
+// Schema에는 실제 데이터가 들어가는게 아니라 어느 타입이 들어갈지만 미리 정의하는거
+const videoSchema = new mongoose.Schema({
+  title: String, // == title: { type: String }
+  description: String,
+  createdAt: Date,
+  hashtags: [{ type: String }],
+  meta: {
+    views: Number,
+    rating: Number,
+  }
+})
+
+const movieModal = mongoose.model("Video", videoSchema); // ("모델의이름", 데이터형태Schema이름)
+export default movieModal;
