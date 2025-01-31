@@ -1,12 +1,13 @@
 import Video from "../models/Video";
 // export const trending = (req, res) => res.render("home", {pageTitle: "Home", fakeUser}); // render(view이름, {템플릿에 보낼 변수 원하는 만큼 보낼 수 있어})
 
-export const home = (req, res) => {
-  Video.find({}, (error, videos) => { // callback function
-    console.log("errors", error);
-    console.log("videos", videos);
-    return res.render("home", {pageTitle: "Home", videos: []});
-  });
+export const home = async (req, res) => {
+  try {
+    const videos = await Video.find({})
+    return res.render("home", {pageTitle: "Home", videos});
+  } catch(error) {
+    return res.render("server-error", error)
+  }
 }
 export const watch = (req, res) => {
   // const id = req.params.id; == same, 아래꺼가 ES6
