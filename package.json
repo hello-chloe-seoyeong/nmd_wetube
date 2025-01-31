@@ -17,6 +17,7 @@
   "homepage": "https://github.com/hello-chloe-seoyeong/nmd_wetube#readme",
   "dependencies": {
     "express": "^4.21.2",
+    "mongoose": "^8.9.5",
     "morgan": "^1.10.0",
     "pug": "^3.0.3"
   },
