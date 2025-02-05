@@ -33,8 +33,16 @@ export const getUpload = (req, res) => {
 
 export const postUpload = (req, res) => {
   // here we will add a video to the video array.
-  const {title} = req.body; // === title = req.body.title;
-
-  videos.push(newVideo);
-  return res.redirect("/")
+  const { title, description, hashtags } = req.body; // === title = req.body.title;
+  const video = new Video({
+    title, // == title: title과 같은데, 앞에 있는 title은 videoSchema에 있는 title, 뒤에 있는 title은 req.body에서 온 title, 이름이 같다면 하나만 적어줘도 돼
+    description,
+    createAt: Date.now(),
+    hashtags: hashtags.split(",").map((word) => `#${word}`),
+    meta: {
+      views: 0,
+      rating: 0
+    }
+  })
+  return res.redirect("/") // home
 }
