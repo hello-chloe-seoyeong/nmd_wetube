@@ -14,5 +14,11 @@ const videoSchema = new mongoose.Schema({
   }
 })
 
-const movieModal = mongoose.model("Video", videoSchema); // ("모델의이름", 데이터형태Schema이름)
+videoSchema.pre("save", async function() {
+  this.hashtags = this.hashtags[0]
+    .split(",")
+    .map((word) => (word.startWith("#") ? word : `#${word}`));
+})
+
+const movieModal = mongoose.model("Video", videoSchema); // Model 만들기 ("모델의이름", 데이터형태Schema이름)
 export default movieModal;
