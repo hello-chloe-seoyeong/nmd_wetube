@@ -1,8 +1,8 @@
 extends base.pug
 
 block content
-  form(method="POST") <!-- form에서 action이 없으믄 있던 그 페이지로 가는거라, 안 필요한 경우 안 쓰면 됨 -->
+  form(method="POST")
     input(name="title", placeholder="Title", required, type="text")
     input(name="description", placeholder="Description", required, type="text")
-    input(name="hashtags" placeholder="Hashtags, separated by comma.", required, type="text") <!-- 나중에 , 로 split 할꺼거든 -->
+    input(name="hashtags" placeholder="Hashtags, separated by comma.", required, type="text")
     input(type="submit", value="Upload Video")
