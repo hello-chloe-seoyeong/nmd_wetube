@@ -34,15 +34,23 @@ export const getUpload = (req, res) => {
 export const postUpload = async (req, res) => {
   // here we will add a video to the video array.
   const { title, description, hashtags } = req.body; // === title = req.body.title;
-  await Video.create({
-    title, // == title: title과 같은데, 앞에 있는 title은 videoSchema에 있는 title, 뒤에 있는 title은 req.body에서 온 title, 이름이 같다면 하나만 적어줘도 돼
-    description,
-    createAt: Date.now(),
-    hashtags: hashtags.split(",").map((word) => `#${word}`),
-    meta: {
-      views: 0,
-      rating: 0
-    }
-  });
-  return res.redirect("/") // home
+  try {
+    await Video.create({
+      title, // == title: title과 같은데, 앞에 있는 title은 videoSchema에 있는 title, 뒤에 있는 title은 req.body에서 온 title, 이름이 같다면 하나만 적어줘도 돼
+      description,
+      // createAt: Date.now(),
+      hashtags: hashtags.split(",").map((word) => `#${word}`),
+      // meta: {
+      //   views: 0,
+      //   rating: 0
+      // } models/Video.js videoSchema에 default 값 지정해둬서 필요없음
+    });
+    return res.redirect("/") // home
+  } catch(err) {
+    console.log(err);
+    return res.render("upload", {
+      pageTitle: "Upload Video",
+      errorMessage: err._message
+    })
+  }
 }
