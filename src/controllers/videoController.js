@@ -27,9 +27,20 @@ export const getEdit = async (req, res) => {
   }
   res.render("edit", {pageTitle: `Edit: ${video.title}`, video})
 };
-export const postEdit = (req, res) => {
+export const postEdit = async (req, res) => {
   const { id } = req.params;
-  const { title } = req.body;
+  const { title, description, hashtags } = req.body;
+  // find video
+  const video = await Video.findById(id);
+  // 없으면 404로 보내고
+  if(!video) {
+    res.render("404", {pageTitle: "Video not found"})
+  }
+  // update
+  video.title = title
+  video.description = description
+  video.hashtags = hashtags.split(",").map((word) => (word.startWith("#") ? word : `#${word}`))
+  await video.save()
   return res.redirect(`/videos/${id}`);
 }
 export const search = (req, res) => res.send("Search");
@@ -48,7 +59,7 @@ export const postUpload = async (req, res) => {
       title, // == title: title과 같은데, 앞에 있는 title은 videoSchema에 있는 title, 뒤에 있는 title은 req.body에서 온 title, 이름이 같다면 하나만 적어줘도 돼
       description,
       // createAt: Date.now(),
-      hashtags: hashtags.split(",").map((word) => `#${word}`),
+      hashtags: hashtags.split(",").map((word) => (word.startWith("#") ? word : `#${word}`)),
       // meta: {
       //   views: 0,
       //   rating: 0
