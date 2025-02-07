@@ -3,7 +3,8 @@ import Video from "../models/Video";
 
 export const home = async (req, res) => {
   try {
-    const videos = await Video.find({})
+    // const videos = await Video.find({});
+    const videos = await Video.find({}).sort({createdAt: "desc"}); // sorting ({기준: "acs/desc"})
     return res.render("home", {pageTitle: "Home", videos});
   } catch(error) {
     return res.render("server-error", error)
@@ -79,4 +80,12 @@ export const deleteVideo = async (req, res) => {
   const { id } = req.params;
   await Video.findByIdAndDelete(id);
   return res.redirect("/");
+}
+
+export const search = (req, res) => {
+  const { keyword } = req.query;
+  if(keyword) { // 조건 만든 이유? 검색 전 /search 페이지 가면 keyword 값이 없어서 undefined가 나와, 그러니 keyword값이 있을때만 검색관련 뭔가를 하려고 if statement
+    // search
+  }
+  return res.render("search", {pageTitle: "Search"})
 }
