@@ -82,10 +82,17 @@ export const deleteVideo = async (req, res) => {
   return res.redirect("/");
 }
 
-export const search = (req, res) => {
+export const search = async (req, res) => {
   const { keyword } = req.query;
+  let videos = []; //
   if(keyword) { // 조건 만든 이유? 검색 전 /search 페이지 가면 keyword 값이 없어서 undefined가 나와, 그러니 keyword값이 있을때만 검색관련 뭔가를 하려고 if statement
     // search
+    videos = await Video.find({
+      title: {
+        $regex: new RegExp(`${keyword}$`, "i")
+      }
+    })
+    // videos가 여기안에만 존재하면 밖에 videos가 undefined야, 그래서 let으로 빈 videos만들어고, keyword 존재 할때 넣어주기
   }
-  return res.render("search", {pageTitle: "Search"})
+  return res.render("search", {pageTitle: "Search", videos})
 }
