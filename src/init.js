@@ -1,5 +1,6 @@
 import "./db"; // 파일 자체를 import
 import "./models/Video"; // 모두가 이 모델을 알 수 있게, db와 mongoose와 연결시켜서 video model 인식시키기
+import "./models/User";
 import app from "./server";
 
 const PORT = 4000;
