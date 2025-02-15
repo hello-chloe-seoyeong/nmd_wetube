@@ -2,7 +2,6 @@ import User from "../models/User";
 
 export const getJoin = (req, res) => res.render("join", {pageTitle: "Join"});
 export const postJoin = async (req, res) => {
-  console.log(req.body);
   const { name, email, username, password, password2, location } = req.body;
   const pageTitle = "Join";
   if(password !== password2) {
@@ -19,17 +18,33 @@ export const postJoin = async (req, res) => {
     })
   }
 
-  await User.create({
-    name,
-    email,
-    password,
-    username,
-    location
-  })
-  return res.redirect("/login");
+  try {
+    await User.create({
+      name,
+      email,
+      password,
+      username,
+      location
+    })
+    return res.redirect("/login");
+  } catch (err) {
+    return res.status(400).render("join", { pageTitle: "Upload Video", errorMessage: err._message})
+  }
+}
+export const getLogin = (req, res) => res.render("login", { pageTitle: "Login"});
+
+export const postLogin = async (req, res) => {
+  // check if account exists
+  const { username, password } = req.body;
+  const exists = await User.exists({ username });
+  if(!exists) {
+    return res.status(400).render("login", { pageTitle: "Login", errorMessage: "An account with this username does not exists." })
+  }
+  // check if password incorrect
+
+  res.end();
 }
 export const edit = (req, res) => res.send("Edit User");
 export const remove = (req, res) => res.send("Delete User");
-export const login = (req, res) => res.send("Login");
 export const logout = (req, res) => res.send("Logout");
 export const see = (req, res) => res.send("See User");
