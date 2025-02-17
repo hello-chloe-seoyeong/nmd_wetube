@@ -40,7 +40,7 @@ export const postLogin = async (req, res) => {
   // const user = await User.exists({ username }); // return true/false
   const user = await User.findOne({ username }); // return {...}
   // 계정이 존재하는지, 비밀번호가 맞는지 확인하려면 "누구"의 비밀번호인지 유저를 2번 찾네? 한번에 합쳐주기
-  const pageTite = "Login"; // 2번 겹치니까 변수로 써서 활용
+  const pageTitle = "Login"; // 2번 겹치니까 변수로 써서 활용
   console.log(user)
   if(!user) {
     return res.status(400).render("login", {
@@ -50,7 +50,7 @@ export const postLogin = async (req, res) => {
   }
   // check if password incorrect
   // const user = await User.findOne({ username });
-  console.log(user.password);
+  // console.log(user.password);
 
   const ok = await bcrypt.compare(password, user.password);
   if(!ok) {
@@ -59,6 +59,10 @@ export const postLogin = async (req, res) => {
       errorMessage: "Wrong password"
     })
   }
+  // req.session: session object에 로그인 정보 추가
+  req.session.loggedIn = true;
+  req.session.user = user;
+  console.log(req.session)
   return res.redirect("/");
 }
 export const edit = (req, res) => res.send("Edit User");

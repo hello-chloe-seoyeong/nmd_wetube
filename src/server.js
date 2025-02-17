@@ -4,6 +4,7 @@ import morgan from "morgan";
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
+import { localsMiddleware } from "./middlewares";
 
 const app = express();
 const logger = morgan("dev");
@@ -19,18 +20,13 @@ app.use(session({
   saveUninitialized: true
 }));
 
-app.use((req, res, next) => {
-  req.sessionStore.all((error, sessions) => {
-    console.log(sessions); // sessions: 백엔드가 기억하고 있는 sessions
-    next();
-  })
-})
-
-// test용, 세션 아이디 활용해서 오브젝트에 새로운것도 추가 가능.
-app.get("/add-one", (req, res, next) => {
-  req.session.potato += 1;
-  return res.send(`${req.session.id} ${req.session.potato}`);
-})
+// app.use((req, res, next) => {
+//   req.sessionStore.all((error, sessions) => {
+//     console.log(sessions); // sessions: 백엔드가 기억하고 있는 sessions
+//     next();
+//   })
+// }) // 로그인 하는 모두의 정보가 궁금하진 않아 지우자.
+app.use(localsMiddleware);
 
 app.use("/", rootRouter);
 app.use("/users", userRouter);
