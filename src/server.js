@@ -21,9 +21,15 @@ app.use(session({
 
 app.use((req, res, next) => {
   req.sessionStore.all((error, sessions) => {
-    console.log(sessions);
+    console.log(sessions); // sessions: 백엔드가 기억하고 있는 sessions
     next();
   })
+})
+
+// test용, 세션 아이디 활용해서 오브젝트에 새로운것도 추가 가능.
+app.get("/add-one", (req, res, next) => {
+  req.session.potato += 1;
+  return res.send(`${req.session.id} ${req.session.potato}`);
 })
 
 app.use("/", rootRouter);
