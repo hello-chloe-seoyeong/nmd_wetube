@@ -1,6 +1,7 @@
 import express from "express"; // "express"라는 package를 express라는 이름으로 import 한거, 경로를 안적어줘도 npm과 nodeJS가 node_modules에 가서 express 찾아서 그 안에 있는 index.js를 실행시켜줘. 와우
-import session from "express-session";
 import morgan from "morgan";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
 import videoRouter from "./routers/videoRouter";
@@ -17,7 +18,8 @@ app.use(express.urlencoded({ extended: true })); // express applicationdl form�
 app.use(session({
   secret: "Hello",
   resave: true,
-  saveUninitialized: true
+  saveUninitialized: true,
+  store: MongoStore.create({ mongoUrl: "mongodb://127.0.0.1:27017/wetube" })
 }));
 
 // app.use((req, res, next) => {
