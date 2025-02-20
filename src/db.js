@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-mongoose.connect("mongodb://127.0.0.1:27017/wetube")
+mongoose.connect(process.env.DB_URL)
 // mongoose.connect("mongodb://127.0.0.1:27017/nameofyourdb") : 새로운 DB만들기 - url(terminal에서 mongosh쳐서 나오는 url)에 /새로운DB이름
 
 const db = mongoose.connection;

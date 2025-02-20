@@ -16,10 +16,10 @@ app.use(logger);
 app.use(express.urlencoded({ extended: true })); // express applicationdl form의 value들을 이해할 수 있도록 하고 자바스크립트 형태로 바꿔줘.
 
 app.use(session({
-  secret: "Hello",
+  secret: process.env.COOKIE_SECRET,
   resave: true,
   saveUninitialized: true,
-  store: MongoStore.create({ mongoUrl: "mongodb://127.0.0.1:27017/wetube" })
+  store: MongoStore.create({ mongoUrl: process.env.DB_URL }) // store: MongoStore.create({ client: connection.client }) // It works as sell
 }));
 
 // app.use((req, res, next) => {
