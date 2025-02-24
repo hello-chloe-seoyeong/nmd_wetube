@@ -96,14 +96,6 @@ export const finishGithubLogin = async (req, res) => {
       }
     })
   ).json();
-  const data = await fetch(finalUrl, {
-    method: "POST",
-    headers: {
-      Accept: "application/json"
-    }
-  })
-  const json = await data.json();
-  console.log(json)
   // res.send(JSON.stringify(json));
   if("access_token" in tokenRequest) {
     // access api
@@ -115,6 +107,7 @@ export const finishGithubLogin = async (req, res) => {
         }
       })
     ).json();
+    console.log(userRequest)
   } else {
     return res.redirect("/login")
   }
