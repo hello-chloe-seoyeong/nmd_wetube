@@ -118,9 +118,25 @@ export const finishGithubLogin = async (req, res) => {
     ).json();
     console.log(userData)
     console.log(emailData)
-    const email = emailData.find((email) => email.primary === true && email.verified === true);
-    if(!email) {
+    const emailObj = emailData.find((email) => email.primary === true && email.verified === true);
+    if(!emailObj) {
       return res.redirect("/login")
+    }
+    const existingUser = await User.findOne({ email: emailObj.email });
+    if(existingUser) { // 동일한 이메일이 있으면 그냥 바로 로그인 시켜주기
+      req.session.loggedIn = true;
+      req.session.user = existingUser;
+      return res.redirect("/");
+    } else {
+      // create an account
+      const user = await User.create({
+        name: userData.name,
+        email: emailObj.email,
+        password: "",
+        username: userData.login,
+        location: userData.location,
+        socialOnly: true,
+      })
     }
   } else {
     return res.redirect("/login")
