@@ -38,7 +38,8 @@ export const postLogin = async (req, res) => {
   // check if account exists
   const { username, password } = req.body;
   // const user = await User.exists({ username }); // return true/false
-  const user = await User.findOne({ username }); // return {...}
+  const user = await User.findOne({ username, socialOnly: false }); // return {...}
+
   // 계정이 존재하는지, 비밀번호가 맞는지 확인하려면 "누구"의 비밀번호인지 유저를 2번 찾네? 한번에 합쳐주기
   const pageTitle = "Login"; // 2번 겹치니까 변수로 써서 활용
   console.log(user)
@@ -122,14 +123,11 @@ export const finishGithubLogin = async (req, res) => {
     if(!emailObj) {
       return res.redirect("/login")
     }
-    const existingUser = await User.findOne({ email: emailObj.email });
-    if(existingUser) { // 동일한 이메일이 있으면 그냥 바로 로그인 시켜주기
-      req.session.loggedIn = true;
-      req.session.user = existingUser;
-      return res.redirect("/");
-    } else {
+    let user = await User.findOne({ email: emailObj.email });
+    if(!user) { // 동일한 이메일이 있으면 그냥 바로 로그인 시켜주기
       // create an account
-      const user = await User.create({
+      user = await User.create({
+        avatarUrl: userData.avatar_url,
         name: userData.name,
         email: emailObj.email,
         password: "",
@@ -138,12 +136,17 @@ export const finishGithubLogin = async (req, res) => {
         socialOnly: true,
       })
     }
+
+    req.session.loggedIn = true;
+    req.session.user = user;
+    return res.redirect("/");
   } else {
     return res.redirect("/login")
   }
 }
-
+export const logout = (req, res) => {
+  req.session.destroy();
+  return res.redirect("/");
+};
 export const edit = (req, res) => res.send("Edit User");
-export const remove = (req, res) => res.send("Delete User");
-export const logout = (req, res) => res.send("Logout");
 export const see = (req, res) => res.send("See User");
