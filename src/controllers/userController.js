@@ -174,7 +174,7 @@ export const postEdit = async (req, res) => {
 
   if (usernameExists._id !== _id || emailExists._id !== _id) {
     return res.status(400).render("edit-profile", {
-      pageTitle,
+      pageTitle: "Edit Profile",
       errorMessage: "This username/email is already taken..",
     });
   }
