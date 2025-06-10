@@ -15,12 +15,14 @@ app.set("views", process.cwd() + "/src/views");
 app.use(logger);
 app.use(express.urlencoded({ extended: true })); // express applicationdl form의 value들을 이해할 수 있도록 하고 자바스크립트 형태로 바꿔줘.
 
-app.use(session({
-  secret: process.env.COOKIE_SECRET,
-  resave: true,
-  saveUninitialized: true,
-  store: MongoStore.create({ mongoUrl: process.env.DB_URL }) // store: MongoStore.create({ client: connection.client }) // It works as sell
-}));
+app.use(
+  session({
+    secret: process.env.COOKIE_SECRET,
+    resave: true,
+    saveUninitialized: true,
+    store: MongoStore.create({ mongoUrl: process.env.DB_URL }), // store: MongoStore.create({ client: connection.client }) // It works as sell
+  })
+);
 
 // app.use((req, res, next) => {
 //   req.sessionStore.all((error, sessions) => {
@@ -30,6 +32,7 @@ app.use(session({
 // }) // 로그인 하는 모두의 정보가 궁금하진 않아 지우자.
 app.use(localsMiddleware);
 
+app.use("/uploads", express.static("uploads"));
 app.use("/", rootRouter);
 app.use("/users", userRouter);
 app.use("/videos", videoRouter);
