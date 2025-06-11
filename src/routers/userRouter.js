@@ -10,9 +10,9 @@ import {
   postChangePassword,
 } from "../controllers/userController";
 import {
+  avatarUpload,
   protectorMiddleware,
   publicMiddleware,
-  uploadFiles,
 } from "../middlewares";
 
 const userRouter = express.Router();
@@ -22,7 +22,7 @@ userRouter
   .route("/edit")
   .all(protectorMiddleware)
   .get(getEdit)
-  .post(uploadFiles.single("avatar"), postEdit); // req.file => avatar file / req.body => input, form
+  .post(avatarUpload.single("avatar"), postEdit); // req.file => avatar file / req.body => input, form
 userRouter
   .route("/change-password")
   .all(protectorMiddleware)
