@@ -66,7 +66,7 @@ export const postUpload = async (req, res) => {
   const { path: fileUrl } = req.file;
   const { title, description, hashtags } = req.body; // === title = req.body.title;
   try {
-    await Video.create({
+    const newVideo = await Video.create({
       title, // == title: title과 같은데, 앞에 있는 title은 videoSchema에 있는 title, 뒤에 있는 title은 req.body에서 온 title, 이름이 같다면 하나만 적어줘도 돼
       fileUrl,
       description,
@@ -78,6 +78,11 @@ export const postUpload = async (req, res) => {
       //   rating: 0
       // } models/Video.js videoSchema에 default 값 지정해둬서 필요없음
     });
+
+    const user = await User.findById(_id);
+    user.videos.push(newVideo._id);
+    user.save();
+
     return res.redirect("/"); // home
   } catch (err) {
     console.log(err);
