@@ -1,3 +1,4 @@
+import User from "../models/User";
 import Video from "../models/Video";
 // export const trending = (req, res) => res.render("home", {pageTitle: "Home", fakeUser}); // render(view이름, {템플릿에 보낼 변수 원하는 만큼 보낼 수 있어})
 
@@ -14,10 +15,12 @@ export const watch = async (req, res) => {
   // const id = req.params.id; == same, 아래꺼가 ES6
   const { id } = req.params;
   const video = await Video.findById(id);
+  const owner = await User.findById(video.owner);
+
   if (!video) {
     res.status(404).render("404", { pageTitle: "Video not found" });
   }
-  res.render("watch", { pageTitle: video.title, video });
+  res.render("watch", { pageTitle: video.title, video, owner });
 };
 
 export const getEdit = async (req, res) => {
@@ -55,6 +58,9 @@ export const getUpload = (req, res) => {
 };
 
 export const postUpload = async (req, res) => {
+  const {
+    user: { _id },
+  } = req.session;
   // here we will add a video to the video array.
   const { path: fileUrl } = req.file;
   const { title, description, hashtags } = req.body; // === title = req.body.title;
@@ -63,6 +69,7 @@ export const postUpload = async (req, res) => {
       title, // == title: title과 같은데, 앞에 있는 title은 videoSchema에 있는 title, 뒤에 있는 title은 req.body에서 온 title, 이름이 같다면 하나만 적어줘도 돼
       fileUrl,
       description,
+      owner: _id,
       // createAt: Date.now(),
       hashtags: Video.formatHashtags(hashtags),
       // meta: {
