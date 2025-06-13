@@ -5,7 +5,9 @@ import Video from "../models/Video";
 export const home = async (req, res) => {
   try {
     // const videos = await Video.find({});
-    const videos = await Video.find({}).sort({ createdAt: "desc" }); // sorting ({기준: "acs/desc"})
+    const videos = await Video.find({})
+      .sort({ createdAt: "desc" })
+      .populate("owner"); // sorting ({기준: "acs/desc"})
     return res.render("home", { pageTitle: "Home", videos });
   } catch (error) {
     return res.render("server-error", error);
@@ -131,7 +133,7 @@ export const search = async (req, res) => {
       title: {
         $regex: new RegExp(`${keyword}$`, "i"),
       },
-    });
+    }).populate("owner");
     // videos가 여기안에만 존재하면 밖에 videos가 undefined야, 그래서 let으로 빈 videos만들어고, keyword 존재 할때 넣어주기
   }
   return res.render("search", { pageTitle: "Search", videos });

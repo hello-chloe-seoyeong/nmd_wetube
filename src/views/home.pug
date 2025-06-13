@@ -3,14 +3,18 @@ include mixins/video
 
 block content
   h2 Welcome here
-  each video in videos
-    +video(video)
+  .video-grid
+
+    each video in videos
+      +video(video)
+    else
+      span.empty__message No videos found
     //- div
     //-   h4=video.title
-    //-   ul 
+    //-   ul
     //-     li #{video.rating}/5
     //-     li #{video.comments} comments.
     //-     li Posted #{video.createdAt}
     //-     li #{video.views} views.
-  else 
-    p Sorry nothing found.
+  //- else
+  //-   p Sorry nothing found.
