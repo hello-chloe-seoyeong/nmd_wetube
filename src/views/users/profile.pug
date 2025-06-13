@@ -2,7 +2,7 @@ extends ../base
 include ../mixins/video
 
 block content 
-  .profile__data 
+  div.profile__data
     img(src="/" + user.avatarUrl).avatar()
     h3=user.name 
   .video-grid 

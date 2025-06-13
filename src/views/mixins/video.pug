@@ -3,10 +3,10 @@ mixin video(info)
     a(href=`/videos/${info.id}`).video-mixin
       .video-mixin__thumb
       .video-mixin__data
-        span.video-mixin__title=video.title
+        span.video-mixin__title=info.title
         .video-mixin__meta
-          span #{video.owner.name} •
-          span #{video.meta.views} 회
+          span #{info.owner.name} •
+          span #{info.meta.views} 회
     //- p=info.description
     //- ul
     //-   each hashtag in info.hashtags
