@@ -72,5 +72,7 @@ muteBtn.addEventListener("click", handleMuteClick);
 // video.addEventListener("play", handlePlay);
 volumeRange.addEventListener("input", handleVolumeInput);
 volumeRange.addEventListener("change", handleVolumeChange);
-video.addEventListener("loadedmetadata", handleLoadMetadata);
-video.addEventListener("timeupdate", handleTimeUpdate);
+video.readyState
+  ? handleLoadMetadata()
+  : video.addEventListener("loadedmetadata", handleLoadMetadata);
+video.addEventListener("timeupdate", handleTimeUpdate); // video의 타임이 변경될때마다 실행돼
