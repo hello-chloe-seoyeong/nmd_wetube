@@ -5,6 +5,7 @@ const time = document.getElementById("time");
 const volumeRange = document.getElementById("volume");
 const currentTime = document.getElementById("currentTime");
 const totalTime = document.getElementById("totalTime");
+const timeline = document.getElementById("timeline");
 
 let volumeValue = 0.5;
 volumeRange.value = volumeValue;
@@ -59,14 +60,23 @@ const handleVolumeChange = (event) => {
 };
 
 const formatTime = (seconds) =>
-  new Date(seconds * 1000).toISOString().substring(11, 8);
+  new Date(seconds * 1000).toISOString().substring(11, 19);
 
 const handleLoadMetadata = () => {
   totalTime.innerText = formatTime(Math.floor(video.duration));
+  timeline.max = Math.floor(video.duration);
 };
 
 const handleTimeUpdate = () => {
   currentTime.innerText = formatTime(Math.floor(video.currentTime));
+  timeline.value = Math.floor(video.currentTime);
+};
+
+const handleTimelineChange = (event) => {
+  const {
+    target: { value },
+  } = event;
+  video.currentTime = value;
 };
 
 playBtn.addEventListener("click", handlePlayClick);
@@ -79,3 +89,4 @@ video.readyState
   ? handleLoadMetadata()
   : video.addEventListener("loadedmetadata", handleLoadMetadata);
 video.addEventListener("timeupdate", handleTimeUpdate); // video의 타임이 변경될때마다 실행돼
+timeline.addEventListener("input", handleTimelineChange);
