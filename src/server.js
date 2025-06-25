@@ -1,6 +1,7 @@
 import express from "express"; // "express"라는 package를 express라는 이름으로 import 한거, 경로를 안적어줘도 npm과 nodeJS가 node_modules에 가서 express 찾아서 그 안에 있는 index.js를 실행시켜줘. 와우
 import morgan from "morgan";
 import session from "express-session";
+import flash from "express-flash";
 import MongoStore from "connect-mongo";
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
@@ -24,6 +25,8 @@ app.use(
     store: MongoStore.create({ mongoUrl: process.env.DB_URL }), // store: MongoStore.create({ client: connection.client }) // It works as sell
   })
 );
+
+app.use(flash());
 
 // app.use((req, res, next) => {
 //   req.sessionStore.all((error, sessions) => {
