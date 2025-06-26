@@ -1,3 +1,4 @@
+import Comment from "../models/Comment";
 import User from "../models/User";
 import Video from "../models/Video";
 // export const trending = (req, res) => res.render("home", {pageTitle: "Home", fakeUser}); // render(view이름, {템플릿에 보낼 변수 원하는 만큼 보낼 수 있어})
@@ -154,9 +155,20 @@ export const registerView = async (req, res) => {
   return res.sendStatus(200);
 };
 
-export const createComment = (req, res) => {
-  console.log(req.params);
-  console.log(req.body);
-  console.log(req.body.text, req.body.rating);
-  return res.end();
+export const createComment = async (req, res) => {
+  const {
+    session: { user },
+    body: { text },
+    params: { id },
+  } = req;
+  const video = await Video.findById(id);
+  if (!video) {
+    return res.sendStatus(404);
+  }
+  const comment = await Comment.create({
+    text,
+    owner: user._id,
+    video: id,
+  });
+  return res.sendStatus(201);
 };
