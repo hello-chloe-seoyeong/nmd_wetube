@@ -11,7 +11,7 @@ const addComment = (text, id) => {
   const span = document.createElement("span");
   span.innerText = ` ${text}`;
   const span2 = document.createElement("span");
-  span.innerText = "❌";
+  span2.innerText = "❌";
   newComment.appendChild(icon);
   newComment.appendChild(span);
   newComment.appendChild(span2);
